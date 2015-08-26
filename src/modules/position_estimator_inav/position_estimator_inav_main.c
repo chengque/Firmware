@@ -1236,7 +1236,6 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 			orb_publish(ORB_ID(vehicle_local_position), vehicle_local_position_pub, &local_pos);
 
 			/* test branch*/
-			if (local_pos.xy_global && local_pos.z_global) {
 				/* publish global position */
 				global_pos.timestamp = t;
 				global_pos.time_utc_usec = gps.time_utc_usec;
@@ -1244,13 +1243,13 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 				double est_lat, est_lon;
 				map_projection_reproject(&ref, local_pos.x, local_pos.y, &est_lat, &est_lon);
 
-				global_pos.lat = est_lat;
-				global_pos.lon = est_lon;
-				global_pos.alt = local_pos.ref_alt - local_pos.z;
+				global_pos.lat = 0;
+				global_pos.lon = 0;
+				global_pos.alt = 0;
 
-				global_pos.vel_n = local_pos.vx;
-				global_pos.vel_e = local_pos.vy;
-				global_pos.vel_d = local_pos.vz;
+				global_pos.vel_n = acc[0];
+				global_pos.vel_e = acc[1];
+				global_pos.vel_d = acc[2];
 
 				global_pos.yaw = local_pos.yaw;
 
@@ -1263,7 +1262,6 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 				} else {
 					orb_publish(ORB_ID(vehicle_global_position), vehicle_global_position_pub, &global_pos);
 				}
-			}
 		}
 	}
 
