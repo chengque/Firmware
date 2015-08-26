@@ -1235,6 +1235,7 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 
 			orb_publish(ORB_ID(vehicle_local_position), vehicle_local_position_pub, &local_pos);
 
+			/* test branch*/
 			if (local_pos.xy_global && local_pos.z_global) {
 				/* publish global position */
 				global_pos.timestamp = t;
