@@ -1094,6 +1094,9 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 			memcpy(z_est_prev, z_est, sizeof(z_est));
 		}
 
+		acc[0]=0;
+		acc[1]=0;
+
 		if (can_estimate_xy) {
 			/* inertial filter prediction for position */
 			inertial_filter_predict(dt, x_est, acc[0]);
@@ -1106,6 +1109,8 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 				memcpy(x_est, x_est_prev, sizeof(x_est));
 				memcpy(y_est, y_est_prev, sizeof(y_est));
 			}
+
+			w_flow=0;
 
 			/* inertial filter correction for position */
 			if (use_flow) {
